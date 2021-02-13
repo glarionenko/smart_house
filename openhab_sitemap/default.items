@@ -1,0 +1,42 @@
+Switch Presence_Mobile_John "John's Mobile" <network> { channel="network:device:192_168_1_103:online" }
+Switch Wallplug_FF_LR_TV "Wallplug TV" <poweroutlet> { channel="zwave:device:bb4d2b80:node30:switch_binary" }
+Group           Home                     "Мой умный дом"     <house>                                        ["Building"]
+
+Group           GF                       "Первый этаж"       <groundfloor>     (Home)                       ["GroundFloor"]
+Group           FF                       "Второй этаж"       <firstfloor>      (Home)                       ["FirstFloor"]
+Group           OU                       "За домом"          <garden>          (Home)                       ["Outdoor"]
+
+Group           GF_Boiler                "Бойлерная"         <gas>             (Home, GF)                   ["Room"]
+Group           GF_Bedroom               "Спальня"           <bedroom>         (Home, GF)                   ["Bedroom"]
+Group           GF_Bathroom              "Ванная комната"    <bath>            (Home, GF)                   ["Bathroom"]
+Group           FF_Bedroom               "Спальня"           <bedroom>         (Home, FF)                   ["Bedroom"]
+Group           FF_Bathroom              "Ванная комната"    <bath>            (Home, FF)                   ["Bathroom"]
+Group           OU_Garage                "Гараж"             <garage>          (Home, OU)                   ["Garage"]
+Group           OU_FrontYard             "Передний двор"     <lawnmower>       (Home, OU)                   ["Garden"]
+
+Number          GF_Boiler_Heating        "Обогрев"           <heating>         (GF_Boiler, gHeating)        ["HVAC"]                           {channel=""}
+Number          GF_Boiler_Temperature    "Температура"       <temperature>     (GF_Boiler, gTemperature)    ["Temperature"]                    {channel=""}
+Switch          GF_Bedroom_Light         "Освещение"         <light>           (GF_Bedroom, gLight)         ["Lighting", "Switchable"]         {channel=""}
+Switch          GF_Bedroom_Power         "Розетка"           <poweroutlet>     (GF_Bedroom, gPower)         ["Switch", "Switchable"]           {channel=""}
+Switch          GF_Bathroom_Light        "Освещение"         <light>           (GF_Bathroom, gLight)        ["Lighting", "Switchable"]         {channel=""}
+Switch          GF_Bathroom_Power        "Розетка"           <poweroutlet>     (GF_Bathroom, gPower)        ["Switch", "Switchable"]           {channel=""}
+Switch          GF_Bathroom_Fan          "Вентилятор"        <fan_ceiling>     (GF_Bathroom, gFan)          ["Switchable"]                     {channel=""}
+Switch          FF_Bedroom_Light         "Освещение"         <light>           (FF_Bedroom, gLight)         ["Lighting", "Switchable"]         {channel=""}
+Rollershutter   FF_Bedroom_Shutter       "Шторы"             <rollershutter>   (FF_Bedroom, gShutter)       ["Rollershutter"]                  {channel=""}
+Number          FF_Bedroom_Temperature   "Температура"       <temperature>     (FF_Bedroom, gTemperature)   ["Temperature"]                    {channel=""}
+Switch          FF_Bathroom_Fan          "Вентилятор"        <fan_ceiling>     (FF_Bathroom, gFan)          ["Switchable"]                     {channel=""}
+Switch          FF_Bathroom_Light        "Освещение"         <light>           (FF_Bathroom, gLight)        ["Lighting", "Switchable"]         {channel=""}
+Switch          OU_Garage_Light          "Освещение"         <light>           (OU_Garage, gLight)          ["Lighting", "Switchable"]         {channel=""}
+Contact         OU_Garage_Door           "Дверь"             <door>            (OU_Garage, gDoor)           ["Door"]                           {channel=""}
+Switch          OU_FrontYard_Motion      "Датчик движения"   <motion>          (OU_FrontYard, gMotion)      ["MotionDetector", "Switchable"]   {channel=""}
+Contact         OU_FrontYard_Door        "Дверь"             <door>            (OU_FrontYard, gDoor)        ["Door"]                           {channel=""}
+Switch          OU_FrontYard_Light       "Освещение"         <light>           (OU_FrontYard, gLight)       ["Lighting", "Switchable"]         {channel=""}
+
+Group:Number:AVG                   gHeating       "Обогрев"           <heating>         (Home)   ["HVAC"]
+Group:Number:AVG                   gTemperature   "Температура"       <temperature>     (Home)   ["Temperature"]
+Group:Switch:OR(ON, OFF)           gLight         "Освещение"         <light>           (Home)   ["Lighting", "Switchable"]
+Group:Switch:OR(ON, OFF)           gPower         "Розетка"           <poweroutlet>     (Home)   ["Switch", "Switchable"]
+Group:Switch:OR(ON, OFF)           gFan           "Вентилятор"        <fan_ceiling>     (Home)   ["Switchable"]
+Group:Rollershutter:OR(UP, DOWN)   gShutter       "Шторы"             <rollershutter>   (Home)   ["Rollershutter"]
+Group:Contact:OR(OPEN, CLOSED)     gDoor          "Дверь"             <door>            (Home)   ["Door"]
+Group:Switch:OR(ON, OFF)           gMotion        "Датчик движения"   <motion>          (Home)   ["MotionDetector", "Switchable"]

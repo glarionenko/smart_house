@@ -1,0 +1,60 @@
+sitemap  label="Мой умный дом" {
+    Frame label="Первый этаж" icon="groundfloor" {
+        Group item=GF_Boiler
+        Group item=GF_Bedroom
+        Group item=GF_Bathroom
+    }
+
+    Frame label="Второй этаж" icon="firstfloor" {
+        Group item=FF_Bedroom
+        Group item=FF_Bathroom
+    }
+
+    Frame label="За домом" icon="garden" {
+        Group item=OU_Garage
+        Group item=OU_FrontYard
+    }
+
+    Frame {
+        Text label="Обогрев" icon="heating" {
+            Default item=GF_Boiler_Heating label="Бойлерная"
+        }
+
+        Text label="Температура" icon="temperature" {
+            Default item=GF_Boiler_Temperature label="Бойлерная"
+            Default item=FF_Bedroom_Temperature label="Спальня"
+        }
+
+        Text label="Освещение" icon="light" {
+            Default item=GF_Bedroom_Light label="Спальня"
+            Default item=GF_Bathroom_Light label="Ванная комната"
+            Default item=FF_Bedroom_Light label="Спальня"
+            Default item=FF_Bathroom_Light label="Ванная комната"
+            Default item=OU_Garage_Light label="Гараж"
+            Default item=OU_FrontYard_Light label="Передний двор"
+        }
+
+        Text label="Розетка" icon="poweroutlet" {
+            Default item=GF_Bedroom_Power label="Спальня"
+            Default item=GF_Bathroom_Power label="Ванная комната"
+        }
+
+        Text label="Вентилятор" icon="fan_ceiling" {
+            Default item=GF_Bathroom_Fan label="Ванная комната"
+            Default item=FF_Bathroom_Fan label="Ванная комната"
+        }
+
+        Text label="Шторы" icon="rollershutter" {
+            Default item=FF_Bedroom_Shutter label="Спальня"
+        }
+
+        Text label="Дверь" icon="door" {
+            Default item=OU_Garage_Door label="Гараж"
+            Default item=OU_FrontYard_Door label="Передний двор"
+        }
+
+        Text label="Датчик движения" icon="motion" {
+            Default item=OU_FrontYard_Motion label="Передний двор"
+        }
+    }
+}
