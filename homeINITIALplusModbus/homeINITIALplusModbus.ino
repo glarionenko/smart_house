@@ -123,6 +123,7 @@ enum
   // i.e. the same address space
 };
 unsigned int holdingRegs[HOLDING_REGS_SIZE];
+
 void setup() {
   modbus_configure(&Serial, 4800, SERIAL_8N2, MODBUS_ID, 7, HOLDING_REGS_SIZE, holdingRegs);
   modbus_update_comms(4800, SERIAL_8N2, MODBUS_ID);
@@ -156,8 +157,6 @@ void setup() {
 
 
   Serial.begin(9600);
-
-
 }
 
 void sleep() {
@@ -168,9 +167,14 @@ void sleep() {
   holdingRegs[CONTACT_1_STATE] = 0;
   holdingRegs[CONTACT_2_STATE] = 0;
 
+  holdingRegs[CONTACT_1_SET] = 0;
+  holdingRegs[CONTACT_2_SET] = 0;
+
   digitalWrite(socket1_floor2, 0);
   digitalWrite(light_stairs_floor1, 0);
   holdingRegs[LAMP_STAIRs_SET] = 0;
+  holdingRegs[LAMP_STAIRS_STATE] = 0;
+
   digitalWrite(light_room1_floor1, 0);
   digitalWrite(light_room1_floor1, 0);
   digitalWrite(light_kotel, 0);
@@ -193,6 +197,8 @@ void sleep() {
   digitalWrite(light_on_stairs, 0);
   digitalWrite(light_street_floor1, 0);
   holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
+  holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_street_floor1);
+
 
   digitalWrite(light_prachka_floor2, 0);
   digitalWrite(light_room1_floor2, 0);
@@ -212,6 +218,9 @@ void wake_up() {
   holdingRegs[CONTACT_1_STATE] = 1;
   holdingRegs[CONTACT_2_STATE] = 1;
 
+  holdingRegs[CONTACT_1_SET] = 1;
+  holdingRegs[CONTACT_2_SET] = 1;
+
   sleep_mode = 0;
 }
 
@@ -222,16 +231,19 @@ void loop() {
 if(digitalRead(kontakt1) != holdingRegs[CONTACT_1_SET]) {
   digitalWrite(kontakt1, holdingRegs[CONTACT_1_SET]);
   holdingRegs[CONTACT_1_STATE] = digitalRead(kontakt1);
+  holdingRegs[CONTACT_1_SET] = digitalRead(kontakt1);
 }
 //-----
 if(digitalRead(kontakt2) != holdingRegs[CONTACT_2_SET]) {
   digitalWrite(kontakt2, holdingRegs[CONTACT_2_SET]);
   holdingRegs[CONTACT_2_STATE] = digitalRead(kontakt2);
+  holdingRegs[CONTACT_2_SET] = digitalRead(kontakt2);
 }
 //-----
 if(digitalRead(light_stairs_floor1) != holdingRegs[LAMP_STAIRs_SET]) {
   digitalWrite(light_stairs_floor1, holdingRegs[LAMP_STAIRs_SET]);
   holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_stairs_floor1);
+  holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
 }
 //-----
 
@@ -254,7 +266,8 @@ modbus_update();
             delay(500);
             digitalWrite(light_hall_floor1, 1);
 
-            holdingRegs[LAMP_STAIRS_STATE] = 0;
+            holdingRegs[LAMP_STAIRS_STATE] = 1;
+            holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
             
           }
         }
@@ -293,6 +306,7 @@ modbus_update();
 
           digitalWrite(light_street_floor1, 1);
           holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
+          holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_street_floor1); 
           delay(3000);
           digitalWrite(light_street_floor2, 1);
 
@@ -300,6 +314,7 @@ modbus_update();
           digitalWrite(light_stairs_floor1, 0);
 
           holdingRegs[LAMP_STAIRS_STATE] = 0;
+          holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
 
           digitalWrite(light_room1_floor1, 0);
           digitalWrite(light_room1_floor1, 0);
@@ -381,6 +396,7 @@ modbus_update();
       if (!digitalRead(switch2_input)) {
         digitalWrite(light_street_floor1, !digitalRead(light_street_floor1));
         holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
+        holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
         flag_switch2_input = 1;
       }
     }
@@ -525,6 +541,7 @@ modbus_update();
       if (!digitalRead(switch_street_floor1)) {
         digitalWrite(light_street_floor1, !digitalRead(light_street_floor1));
         holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
+        holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
         flag_street1 = 1;
       }
     }
