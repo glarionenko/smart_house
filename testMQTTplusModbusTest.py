@@ -21,10 +21,10 @@ instr.debug=False
 print(instr)
 sleep(2)
 #
-number_of_triggers=4
-topic_to_id={"home/contact_1/set":0,"home/contact_2/set":1,"home/lamp_stairs/set":2,"home/kitchen_1/set":3}
+number_of_triggers=5
+topic_to_id={"home/contact_1/set":0,"home/contact_2/set":1,"home/lamp_stairs/set":2,"home/kitchen_1/set":3,"home/kitchen_2/set":4}
 id_to_topic = {v: k for k, v in topic_to_id.items()}
-topic_to_id_states={"home/contact_1/state":0,"home/contact_2/state":1,"home/lamp_stairs/state":2,"home/kitchen_1/state":3}
+topic_to_id_states={"home/contact_1/state":0,"home/contact_2/state":1,"home/lamp_stairs/state":2,"home/kitchen_1/state":3,"home/kitchen_1/state":3,"home/kitchen_2/state":4}
 id_to_topic_states = {v: k for k, v in topic_to_id_states.items()}
 changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
 def on_publish(client,userdata,result):             #create function for callback
