@@ -75,6 +75,10 @@ while True:
     sleep(0.1)
     #cb=instr.read_register(1,0)
     print("Started")
+    for tr in range(0+number_of_triggers,number_of_triggers+number_of_triggers):
+        bb=instr.read_register(tr,0)
+        client1.publish(id_to_topic_states[tr-number_of_triggers],bb)
+
     
     
         
