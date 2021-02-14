@@ -4,12 +4,12 @@ import minimalmodbus
 from time import *
 
 #mqtt auth
-broker="192.168.50.83"
+broker="192.168.1.61"
 port=1883
 
 #modbus start
 minimalmodbus.baudrate = 9600
-instr = minimalmodbus.Instrument('COM7', 1)
+instr = minimalmodbus.Instrument('/dev/ttyACM0', 1)
 instr.serial.baudrate=9600
 instr.debug=False
 print(instr)
@@ -39,7 +39,7 @@ def on_message(client, userdata, message):
     #client.publish(id_to_topic_states[topic_to_id[message.topic]],str(changed[topic_to_id[message.topic]]))
     
 client1= paho.Client("openhabian1")                           #create client object
-client1.username_pw_set("openhabian","55566678")
+client1.username_pw_set("house","55566678")
 client1.on_publish = on_publish                          #assign function to callback
 client1.on_message=on_message
 client1.connect(broker,port)

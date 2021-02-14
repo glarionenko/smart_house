@@ -109,7 +109,7 @@ int flag_fan2 = 0;
 long int timers_button = 0;
 
 //CONFIGURABLE
-#define MODBUS_ID 3
+#define MODBUS_ID 1
 enum
 {
   CONTACT_1_SET,
@@ -125,7 +125,7 @@ enum
 unsigned int holdingRegs[HOLDING_REGS_SIZE];
 
 void setup() {
-  modbus_configure(&Serial, 4800, SERIAL_8N2, MODBUS_ID, 7, HOLDING_REGS_SIZE, holdingRegs);
+  modbus_configure(&Serial, 4800, SERIAL_8N2, MODBUS_ID, 2, HOLDING_REGS_SIZE, holdingRegs);
   modbus_update_comms(4800, SERIAL_8N2, MODBUS_ID);
   for (int i = 34; i < 53; i += 2) {
     pinMode(i, INPUT_PULLUP);
@@ -156,7 +156,7 @@ void setup() {
   pinMode(A15, INPUT_PULLUP);
 
 
-  Serial.begin(9600);
+  //Serial.begin(9600);
 }
 
 void sleep() {
