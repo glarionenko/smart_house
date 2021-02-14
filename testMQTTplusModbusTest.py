@@ -65,6 +65,7 @@ def change(_register,_value):
     try:
         instr.write_register(_register,_value,0)
         done = 1
+        sleep(10)
     except KeyboardInterrupt:
         sys.exit()
     except Exception as e:
@@ -72,12 +73,17 @@ def change(_register,_value):
         print(e)
         #continue
 while True:
-    sleep(0.1)
+    sleep(1)
     #cb=instr.read_register(1,0)
     print("Started")
     for tr in range(0+number_of_triggers,number_of_triggers+number_of_triggers):
-        bb=instr.read_register(tr,0)
-        client1.publish(id_to_topic_states[tr-number_of_triggers],bb)
+        sleep(1)
+        try:
+            print(tr)
+            bb=instr.read_register(tr,0)
+            client1.publish(id_to_topic_states[tr-number_of_triggers],bb)
+        except Exception as e:
+            print(e)
 
     
     
