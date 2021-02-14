@@ -277,8 +277,8 @@ if(digitalRead(light1_kitchen) != holdingRegs[LIGHT1_KITCHEN_SET]) {
   holdingRegs[LIGHT1_KITCHEN_STAITE] = digitalRead(light1_kitchen);
 }
 //-----
-if(digitalRead(light2_kitchen_tv) != holdingRegs[LIGHT1_KITCHEN_SET]) {
-  digitalWrite(light2_kitchen_tv, holdingRegs[LIGHT1_KITCHEN_SET]);
+if(digitalRead(light2_kitchen_tv) != holdingRegs[LIGHT2_KITCHEN_SET]) {
+  digitalWrite(light2_kitchen_tv, holdingRegs[LIGHT2_KITCHEN_SET]);
   holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
   holdingRegs[LIGHT2_KITCHEN_STAITE] = digitalRead(light2_kitchen_tv);
 }
