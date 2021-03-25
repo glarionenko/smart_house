@@ -47,9 +47,9 @@
 
 #define light2_kitchen_tv 11
 #define light_bathroom_floor1 12
-#define light1_floor3 49
+#define light1_floor3 53//changed
 #define towel_bathroom_floor1 51//полотенчик
-#define towel_bathroom_floor2 53
+#define towel_bathroom_floor2 49 //changed
 
 #define light_room2_floor2 47
 #define fan_bathroom_floor1 45
@@ -61,7 +61,7 @@
 #define light_room1_floor2 33
 #define light_wardrobe_floor2 31
 #define light_room3_floor2 29
-#define light2_floor3 27
+#define light2_floor3 27//changeeed
 
 #define pir A14
 #define code A15
