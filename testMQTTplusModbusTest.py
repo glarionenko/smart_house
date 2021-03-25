@@ -43,7 +43,7 @@ topic_to_id={"home/contact_1/set":0,
              "home/bedroom_socket_floor_2/set":18,
              "home/room_medium_light_floor_2/set":19,
              "home/room_small_light_floor_2/set":20,
-             "home/hall_light_floor_2/set":21,
+             "home/hall_light_floor_2/set":21
              }     
 id_to_topic = {v: k for k, v in topic_to_id.items()}
 topic_to_id_states={"home/contact_1/state":0,
@@ -67,7 +67,7 @@ topic_to_id_states={"home/contact_1/state":0,
                     "home/bedroom_socket_floor_2/state":18,
                     "home/room_medium_light_floor_2/state":19,
                     "home/room_small_light_floor_2/state":20,
-                    "home/hall_light_floor_2/state":21,
+                    "home/hall_light_floor_2/state":21
                     }
 id_to_topic_states = {v: k for k, v in topic_to_id_states.items()}
 changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
