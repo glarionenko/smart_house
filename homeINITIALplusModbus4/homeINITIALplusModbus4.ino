@@ -258,7 +258,8 @@ void checkModbus(int pin,int reg_set,int reg_state){
   if (digitalRead(pin) != holdingRegs[reg_set]) {
     digitalWrite(pin, holdingRegs[reg_set]);
     holdingRegs[reg_set] = digitalRead(pin);
-  holdingRegs[reg_sate]= digitalRead(pin);
+  holdingRegs[reg_state]= digitalRead(pin);
+  }
   }
 void loop() {
 
