@@ -292,6 +292,8 @@ updateRegs(light_room1_floor2,ROOM_MED_LIGHT_FLOOR_2_SET,ROOM_MED_LIGHT_FLOOR_2_
 updateRegs(light_room3_floor2,ROOM_SMALL_LIGHT_FLOOR_2_SET,ROOM_SMALL_LIGHT_FLOOR_2_STATE);
 updateRegs(light1_floor3,HALL_LIGHT_FLOOR_2_SET,HALL_LIGHT_FLOOR_2_STATE);
 
+//updateRegs(kontakt1,HOUSE_SWITCH_SET,HOUSE_SWITCH_STATE);
+
   flag_fan1 = 0;
   flag_fan2 = 0;
   sleep_mode = 1;
@@ -370,6 +372,7 @@ checkModbus(socket1_floor2,BEDROOM_SOCKET_FLOOR_2_SET,BEDROOM_SOCKET_FLOOR_2_STA
 checkModbus(light_room1_floor2,ROOM_MED_LIGHT_FLOOR_2_SET,ROOM_MED_LIGHT_FLOOR_2_STATE);
 checkModbus(light_room3_floor2,ROOM_SMALL_LIGHT_FLOOR_2_SET,ROOM_SMALL_LIGHT_FLOOR_2_STATE);
 checkModbus(light1_floor3,HALL_LIGHT_FLOOR_2_SET,HALL_LIGHT_FLOOR_2_STATE);
+
 
   //-----
   modbus_update();
