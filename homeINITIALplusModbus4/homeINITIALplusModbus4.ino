@@ -110,7 +110,7 @@ int flag_fan2 = 0;
 
 long int timers_button = 0;
 
-int old_staite_power = 0;
+int old_STATE_power = 0;
 
 //CONFIGURABLE
 #define MODBUS_ID 1
@@ -119,14 +119,16 @@ enum
 {
   CONTACT_1_SET,
   CONTACT_2_SET,
-  LAMP_STAIRs_SET,
+  LAMP_STAIRS_SET,
   LIGHT1_KITCHEN_SET,
   LIGHT2_KITCHEN_SET,
+  HALL_MAIN_LIGHT_SET,
   CONTACT_1_STATE,
   CONTACT_2_STATE,
   LAMP_STAIRS_STATE,
-  LIGHT1_KITCHEN_STAITE,
-  LIGHT2_KITCHEN_STAITE,
+  LIGHT1_KITCHEN_STATE,
+  LIGHT2_KITCHEN_STATE,
+  HALL_MAIN_LIGHT_STATE,
   HOLDING_REGS_SIZE // leave this one
   // total number of registers for function 3 and 16 share the same register array
   // i.e. the same address space
@@ -167,12 +169,12 @@ void setup() {
   digitalWrite(kontakt2, 1);
   holdingRegs[CONTACT_2_STATE] = 1;
   holdingRegs[CONTACT_2_SET] = 1;
- // Serial.begin(9600);
+  // Serial.begin(9600);
 
- old_staite_power = EEPROM.read(0);
- if(old_staite_power == 1) {
-  wake_up();
- } 
+  old_STATE_power = EEPROM.read(0);
+  if (old_STATE_power == 1) {
+    wake_up();
+  }
 
 }
 
@@ -189,7 +191,7 @@ void sleep() {
 
   digitalWrite(socket1_floor2, 0);
   digitalWrite(light_stairs_floor1, 0);
-  holdingRegs[LAMP_STAIRs_SET] = 0;
+  holdingRegs[LAMP_STAIRS_SET] = 0;
   holdingRegs[LAMP_STAIRS_STATE] = 0;
 
   digitalWrite(light_room1_floor1, 0);
@@ -199,14 +201,16 @@ void sleep() {
   digitalWrite(light_tambur, 0);
   digitalWrite(light1_kitchen, 0);
   holdingRegs[LIGHT1_KITCHEN_SET] = digitalRead(light1_kitchen);
-  holdingRegs[LIGHT1_KITCHEN_STAITE] = digitalRead(light1_kitchen);
+  holdingRegs[LIGHT1_KITCHEN_STATE] = digitalRead(light1_kitchen);
   digitalWrite(light_hall_floor1, 0);
+  holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
+  holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
   digitalWrite(light_badroom_floor2, 0);
   digitalWrite(fan_badroom_floor2, 0);
 
   digitalWrite(light2_kitchen_tv, 0);
   holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
-          holdingRegs[LIGHT2_KITCHEN_STAITE] = digitalRead(light2_kitchen_tv);
+  holdingRegs[LIGHT2_KITCHEN_STATE] = digitalRead(light2_kitchen_tv);
   digitalWrite(light_badroom_floor1, 0);
   digitalWrite(light1_floor3, 0);
   digitalWrite(towel_badroom_floor1, 0);
@@ -218,7 +222,7 @@ void sleep() {
   digitalWrite(light_on_stairs, 0);
   digitalWrite(light_street_floor1, 0);
   holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
-  holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_street_floor1);
+  holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_street_floor1);
 
 
   digitalWrite(light_prachka_floor2, 0);
@@ -250,62 +254,75 @@ void wake_up() {
 }
 
 
-
+void checkModbus(int pin,int reg_set,int reg_state){
+  if (digitalRead(pin) != holdingRegs[reg_set]) {
+    digitalWrite(pin, holdingRegs[reg_set]);
+    holdingRegs[reg_set] = digitalRead(pin);
+  holdingRegs[reg_sate]= digitalRead(pin);
+  }
 void loop() {
 
-  if(digitalRead(kontakt1) != holdingRegs[CONTACT_1_SET]) {
+  if (digitalRead(kontakt1) != holdingRegs[CONTACT_1_SET]) {
     digitalWrite(kontakt1, holdingRegs[CONTACT_1_SET]);
     holdingRegs[CONTACT_1_STATE] = digitalRead(kontakt1);
     holdingRegs[CONTACT_1_SET] = digitalRead(kontakt1);
   }
-//-----
-if(digitalRead(kontakt2) != holdingRegs[CONTACT_2_SET]) {
-  digitalWrite(kontakt2, holdingRegs[CONTACT_2_SET]);
-  holdingRegs[CONTACT_2_STATE] = digitalRead(kontakt2);
-  holdingRegs[CONTACT_2_SET] = digitalRead(kontakt2);
-}
-//-----
-if(digitalRead(light_stairs_floor1) != holdingRegs[LAMP_STAIRs_SET]) {
-  digitalWrite(light_stairs_floor1, holdingRegs[LAMP_STAIRs_SET]);
-  holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_stairs_floor1);
-  holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
-}
-//-----
-if(digitalRead(light1_kitchen) != holdingRegs[LIGHT1_KITCHEN_SET]) {
-  digitalWrite(light1_kitchen, holdingRegs[LIGHT1_KITCHEN_SET]);
-  holdingRegs[LIGHT1_KITCHEN_SET] = digitalRead(light1_kitchen);
-  holdingRegs[LIGHT1_KITCHEN_STAITE] = digitalRead(light1_kitchen);
-}
-//-----
-if(digitalRead(light2_kitchen_tv) != holdingRegs[LIGHT2_KITCHEN_SET]) {
-  digitalWrite(light2_kitchen_tv, holdingRegs[LIGHT2_KITCHEN_SET]);
-  holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
-  holdingRegs[LIGHT2_KITCHEN_STAITE] = digitalRead(light2_kitchen_tv);
-}
-//-----
+  //-----
+  if (digitalRead(kontakt2) != holdingRegs[CONTACT_2_SET]) {
+    digitalWrite(kontakt2, holdingRegs[CONTACT_2_SET]);
+    holdingRegs[CONTACT_2_STATE] = digitalRead(kontakt2);
+    holdingRegs[CONTACT_2_SET] = digitalRead(kontakt2);
+  }
+  //-----
+  if (digitalRead(light_stairs_floor1) != holdingRegs[LAMP_STAIRS_SET]) {
+    digitalWrite(light_stairs_floor1, holdingRegs[LAMP_STAIRS_SET]);
+    holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_stairs_floor1);
+    holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_stairs_floor1);
+  }
+  //-----
+  if (digitalRead(light1_kitchen) != holdingRegs[LIGHT1_KITCHEN_SET]) {
+    digitalWrite(light1_kitchen, holdingRegs[LIGHT1_KITCHEN_SET]);
+    holdingRegs[LIGHT1_KITCHEN_SET] = digitalRead(light1_kitchen);
+    holdingRegs[LIGHT1_KITCHEN_STATE] = digitalRead(light1_kitchen);
+  }
+  //-----
+  if (digitalRead(light2_kitchen_tv) != holdingRegs[LIGHT2_KITCHEN_SET]) {
+    digitalWrite(light2_kitchen_tv, holdingRegs[LIGHT2_KITCHEN_SET]);
+    holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
+    holdingRegs[LIGHT2_KITCHEN_STATE] = digitalRead(light2_kitchen_tv);
+  }
+  //-----
+   /* 
+if (digitalRead(light_hall_floor1) != holdingRegs[HALL_MAIN_LIGHT_SET]) {
+    digitalWrite(light_hall_floor1, holdingRegs[HALL_MAIN_LIGHT_SET]);
+    holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
+  holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
+  }
+  */
+  checkModbus(light_hall_floor1,HALL_MAIN_LIGHT_SET,HALL_MAIN_LIGHT_STATE);
+  //-----
+  modbus_update();
 
-modbus_update();
-
-if (sleep_mode == 1) {
+  if (sleep_mode == 1) {
 
 
-  if (!digitalRead(code) && flag_input_code == 0) {
-    delay(30);
-    if (!digitalRead(code)) {
+    if (!digitalRead(code) && flag_input_code == 0) {
       delay(30);
       if (!digitalRead(code)) {
         delay(30);
         if (!digitalRead(code)) {
-          flag_input_code = 1;
-          wake_up();
-          delay(300);
-          digitalWrite(light_tambur, 1);
-          delay(500);
-          digitalWrite(light_hall_floor1, 1);
+          delay(30);
+          if (!digitalRead(code)) {
+            flag_input_code = 1;
+            wake_up();
+            delay(300);
+            digitalWrite(light_tambur, 1);
+            delay(500);
+            digitalWrite(light_hall_floor1, 1);
 
             //holdingRegs[LAMP_STAIRS_STATE] = 1;
-            //holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
-            
+            //holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_stairs_floor1);
+
           }
         }
       }
@@ -343,7 +360,7 @@ if (sleep_mode == 1) {
 
             digitalWrite(light_street_floor1, 1);
             holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
-            holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_street_floor1); 
+            holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_street_floor1);
             delay(3000);
             digitalWrite(light_street_floor2, 1);
 
@@ -351,109 +368,113 @@ if (sleep_mode == 1) {
             digitalWrite(light_stairs_floor1, 0);
 
             holdingRegs[LAMP_STAIRS_STATE] = 0;
-            holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
+            holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_stairs_floor1);
 
             digitalWrite(light_room1_floor1, 0);
             digitalWrite(light_room1_floor1, 0);
             digitalWrite(light_kotel, 0);
 
-          //digitalWrite(light_tambur, 0);
-          digitalWrite(light1_kitchen, 0);
-          holdingRegs[LIGHT1_KITCHEN_SET] = digitalRead(light1_kitchen);
-          holdingRegs[LIGHT1_KITCHEN_STAITE] = digitalRead(light1_kitchen);
-          digitalWrite(light_hall_floor1, 0);
-          digitalWrite(light_badroom_floor2, 0);
-          digitalWrite(fan_badroom_floor2, 0);
+            //digitalWrite(light_tambur, 0);
+            digitalWrite(light1_kitchen, 0);
+            holdingRegs[LIGHT1_KITCHEN_SET] = digitalRead(light1_kitchen);
+            holdingRegs[LIGHT1_KITCHEN_STATE] = digitalRead(light1_kitchen);
+            digitalWrite(light_hall_floor1, 0);
+            holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
+            holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
+            digitalWrite(light_badroom_floor2, 0);
+            digitalWrite(fan_badroom_floor2, 0);
 
-          digitalWrite(light2_kitchen_tv, 0);
-          holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
-          holdingRegs[LIGHT2_KITCHEN_STAITE] = digitalRead(light2_kitchen_tv);
-          digitalWrite(light_badroom_floor1, 0);
-          digitalWrite(light1_floor3, 0);
-          digitalWrite(towel_badroom_floor1, 0);
-          digitalWrite(towel_badroom_floor2, 0);
+            digitalWrite(light2_kitchen_tv, 0);
+            holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
+            holdingRegs[LIGHT2_KITCHEN_STATE] = digitalRead(light2_kitchen_tv);
+            digitalWrite(light_badroom_floor1, 0);
+            digitalWrite(light1_floor3, 0);
+            digitalWrite(towel_badroom_floor1, 0);
+            digitalWrite(towel_badroom_floor2, 0);
 
-          digitalWrite(light_room2_floor2, 0);
-          digitalWrite(fan_badroom_floor1, 0);
-          digitalWrite(light_street_floor2, 0);
-          digitalWrite(light_on_stairs, 0);
-          //digitalWrite(light_street_floor1, 0);
+            digitalWrite(light_room2_floor2, 0);
+            digitalWrite(fan_badroom_floor1, 0);
+            digitalWrite(light_street_floor2, 0);
+            digitalWrite(light_on_stairs, 0);
+            //digitalWrite(light_street_floor1, 0);
 
-          //digitalWrite(light_prachka_floor2, 0);
-          digitalWrite(light_room1_floor2, 0);
-          digitalWrite(light_wardrobe_floor2, 0);
-          digitalWrite(light_room3_floor2, 0);
-          digitalWrite(light2_floor3, 0);
-          flag_error = 0;
-          for(long int i = 0; i < 60000; i++) {
-            delay(1);
-            if(flag_input_code == 1 && digitalRead(code)) {
-              delay(200);
-              if(digitalRead(code)) flag_input_code = 0;
-            }
-
-            if(i == 10000) digitalWrite(light_tambur, 0);
-
-            if(!digitalRead(code) && flag_input_code == 0) {
-              delay(300);
-              if(!digitalRead(code)) {
-                wake_up();
-                flag_error = 1;
-                i = 63000;
-                flag_input_code = 1;
+            //digitalWrite(light_prachka_floor2, 0);
+            digitalWrite(light_room1_floor2, 0);
+            digitalWrite(light_wardrobe_floor2, 0);
+            digitalWrite(light_room3_floor2, 0);
+            digitalWrite(light2_floor3, 0);
+            flag_error = 0;
+            for (long int i = 0; i < 60000; i++) {
+              delay(1);
+              if (flag_input_code == 1 && digitalRead(code)) {
+                delay(200);
+                if (digitalRead(code)) flag_input_code = 0;
               }
+
+              if (i == 10000) digitalWrite(light_tambur, 0);
+
+              if (!digitalRead(code) && flag_input_code == 0) {
+                delay(300);
+                if (!digitalRead(code)) {
+                  wake_up();
+                  flag_error = 1;
+                  i = 63000;
+                  flag_input_code = 1;
+                }
+              }
+
             }
-            
+
+
+            if (flag_error == 0) {
+              sleep();
+            }
+
           }
-
-
-          if(flag_error == 0) {
-            sleep();
-          }
-
         }
       }
     }
-  }
 
-  if (!digitalRead(switch_kotel) && flag_kotel == 0) {
-    delay(40);
-    if (!digitalRead(switch_kotel)) {
-      digitalWrite(light_kotel, !digitalRead(light_kotel));
-      flag_kotel = 1;
+    if (!digitalRead(switch_kotel) && flag_kotel == 0) {
+      delay(40);
+      if (!digitalRead(switch_kotel)) {
+        digitalWrite(light_kotel, !digitalRead(light_kotel));
+        flag_kotel = 1;
+      }
     }
-  }
 
-  if (flag_kotel) {
-    if (digitalRead(switch_kotel)) {
-      delay(50);
-      if (digitalRead(switch_kotel)) flag_kotel = 0;
+    if (flag_kotel) {
+      if (digitalRead(switch_kotel)) {
+        delay(50);
+        if (digitalRead(switch_kotel)) flag_kotel = 0;
+      }
     }
-  }
 
 
-  if (!digitalRead(switch2_input) && flag_switch2_input == 0) {
-    delay(40);
-    if (!digitalRead(switch2_input)) {
-      digitalWrite(light_street_floor1, !digitalRead(light_street_floor1));
-      holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
-      holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
-      flag_switch2_input = 1;
+    if (!digitalRead(switch2_input) && flag_switch2_input == 0) {
+      delay(40);
+      if (!digitalRead(switch2_input)) {
+        digitalWrite(light_street_floor1, !digitalRead(light_street_floor1));
+        holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
+        holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_stairs_floor1);
+        flag_switch2_input = 1;
+      }
     }
-  }
 
-  if (flag_switch2_input) {
-    if (digitalRead(switch2_input)) {
-      delay(50);
-      if (digitalRead(switch2_input)) flag_switch2_input = 0;
+    if (flag_switch2_input) {
+      if (digitalRead(switch2_input)) {
+        delay(50);
+        if (digitalRead(switch2_input)) flag_switch2_input = 0;
+      }
     }
-  }
     //--------------
 
     if (!digitalRead(switch1_floor1) && flag_switch_floor1 == 0) {
       delay(40);
       if (!digitalRead(switch1_floor1)) {
         digitalWrite(light_hall_floor1, !digitalRead(light_hall_floor1));
+        holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
+        holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
         flag_switch_floor1 = 1;
       }
     }
@@ -491,7 +512,7 @@ if (sleep_mode == 1) {
         digitalWrite(light_stairs_floor1, !digitalRead(light_stairs_floor1));
         flag_switch2_floor1 = 1;
         holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_stairs_floor1);
-        holdingRegs[LAMP_STAIRs_SET] = digitalRead(light_stairs_floor1);
+        holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_stairs_floor1);
       }
     }
 
@@ -510,7 +531,7 @@ if (sleep_mode == 1) {
         digitalWrite(light1_kitchen, !digitalRead(light1_kitchen));
         flag_switch1_kitchen = 1;
         holdingRegs[LIGHT1_KITCHEN_SET] = digitalRead(light1_kitchen);
-        holdingRegs[LIGHT1_KITCHEN_STAITE] = digitalRead(light1_kitchen);
+        holdingRegs[LIGHT1_KITCHEN_STATE] = digitalRead(light1_kitchen);
       }
     }
 
@@ -531,7 +552,7 @@ if (sleep_mode == 1) {
         digitalWrite(light2_kitchen_tv, !digitalRead(light2_kitchen_tv));
         flag_switch2_kitchen = 1;
         holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
-          holdingRegs[LIGHT2_KITCHEN_STAITE] = digitalRead(light2_kitchen_tv);
+        holdingRegs[LIGHT2_KITCHEN_STATE] = digitalRead(light2_kitchen_tv);
       }
     }
 
@@ -551,6 +572,8 @@ if (sleep_mode == 1) {
       if (!digitalRead(switch_hall_floor1)) {
         digitalWrite(light_hall_floor1, !digitalRead(light_hall_floor1));
         flag_hall_floor1 = 1;
+        holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
+        holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
       }
     }
 
@@ -575,7 +598,7 @@ if (sleep_mode == 1) {
       if (digitalRead(switch_input)) {
         delay(30);
         if (digitalRead(switch_input))
-        flag_switch_input = 0;
+          flag_switch_input = 0;
         digitalWrite(light_tambur, !digitalRead(light_tambur));
       }
     }
