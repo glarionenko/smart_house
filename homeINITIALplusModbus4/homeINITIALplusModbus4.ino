@@ -123,12 +123,14 @@ enum
   LIGHT1_KITCHEN_SET,
   LIGHT2_KITCHEN_SET,
   HALL_MAIN_LIGHT_SET,
+  TAMBUR_LIGHT_SET,
   CONTACT_1_STATE,
   CONTACT_2_STATE,
   LAMP_STAIRS_STATE,
   LIGHT1_KITCHEN_STATE,
   LIGHT2_KITCHEN_STATE,
   HALL_MAIN_LIGHT_STATE,
+  TAMBUR_LIGHT_STATE,
   HOLDING_REGS_SIZE // leave this one
   // total number of registers for function 3 and 16 share the same register array
   // i.e. the same address space
@@ -254,13 +256,17 @@ void wake_up() {
 }
 
 
-void checkModbus(int pin,int reg_set,int reg_state){
+void checkModbus(int pin, int reg_set, int reg_state) {
   if (digitalRead(pin) != holdingRegs[reg_set]) {
     digitalWrite(pin, holdingRegs[reg_set]);
     holdingRegs[reg_set] = digitalRead(pin);
-  holdingRegs[reg_state]= digitalRead(pin);
+    holdingRegs[reg_state] = digitalRead(pin);
   }
-  }
+}
+void updateRegs(int pin, int reg_set, int reg_state) {
+  holdingRegs[reg_state] = digitalRead(pin);
+  holdingRegs[reg_set] = digitalRead(pin);
+}
 void loop() {
 
   if (digitalRead(kontakt1) != holdingRegs[CONTACT_1_SET]) {
@@ -293,14 +299,16 @@ void loop() {
     holdingRegs[LIGHT2_KITCHEN_STATE] = digitalRead(light2_kitchen_tv);
   }
   //-----
-   /* 
-if (digitalRead(light_hall_floor1) != holdingRegs[HALL_MAIN_LIGHT_SET]) {
+  /*
+    if (digitalRead(light_hall_floor1) != holdingRegs[HALL_MAIN_LIGHT_SET]) {
     digitalWrite(light_hall_floor1, holdingRegs[HALL_MAIN_LIGHT_SET]);
     holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
-  holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
-  }
+    holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
+    }
   */
-  checkModbus(light_hall_floor1,HALL_MAIN_LIGHT_SET,HALL_MAIN_LIGHT_STATE);
+  checkModbus(light_hall_floor1, HALL_MAIN_LIGHT_SET, HALL_MAIN_LIGHT_STATE);
+  checkModbus(light_tambur, TAMBUR_LIGHT_SET, TAMBUR_LIGHT_STATE);
+
   //-----
   modbus_update();
 
@@ -358,7 +366,7 @@ if (digitalRead(light_hall_floor1) != holdingRegs[HALL_MAIN_LIGHT_SET]) {
             digitalWrite(light_tambur, 0);
             delay(1000);
             digitalWrite(light_tambur, 1);
-
+            //updateRegs(light_tambur, TAMBUR_LIGHT_SET,TAMBUR_LIGHT_STATE);
             digitalWrite(light_street_floor1, 1);
             holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_street_floor1);
             holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_street_floor1);
@@ -425,8 +433,7 @@ if (digitalRead(light_hall_floor1) != holdingRegs[HALL_MAIN_LIGHT_SET]) {
               }
 
             }
-
-
+            updateRegs(light_tambur, TAMBUR_LIGHT_SET,TAMBUR_LIGHT_STATE);
             if (flag_error == 0) {
               sleep();
             }
@@ -591,6 +598,7 @@ if (digitalRead(light_hall_floor1) != holdingRegs[HALL_MAIN_LIGHT_SET]) {
       if (!digitalRead(switch_input)) {
         timers_button = millis();
         flag_switch_input = 1;
+        
       }
     }
 
@@ -601,6 +609,7 @@ if (digitalRead(light_hall_floor1) != holdingRegs[HALL_MAIN_LIGHT_SET]) {
         if (digitalRead(switch_input))
           flag_switch_input = 0;
         digitalWrite(light_tambur, !digitalRead(light_tambur));
+        updateRegs(light_tambur, TAMBUR_LIGHT_SET,TAMBUR_LIGHT_STATE);
       }
     }
 
