@@ -21,7 +21,7 @@ instr.debug=False
 print(instr)
 sleep(2)
 #
-number_of_triggers=8
+number_of_triggers=9
 topic_to_id={"home/contact_1/set":0,
              "home/contact_2/set":1,
              "home/lamp_stairs/set":2,
