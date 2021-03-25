@@ -4,7 +4,7 @@ import minimalmodbus
 from time import *
 
 #mqtt auth
-broker="192.168.1.61"
+broker="192.168.1.59"
 port=1883
 
 #modbus start
@@ -22,9 +22,17 @@ print(instr)
 sleep(2)
 #
 number_of_triggers=5
-topic_to_id={"home/contact_1/set":0,"home/contact_2/set":1,"home/lamp_stairs/set":2,"home/kitchen_1/set":3,"home/kitchen_2/set":4}
+topic_to_id={"home/contact_1/set":0,
+             "home/contact_2/set":1,
+             "home/lamp_stairs/set":2,
+             "home/kitchen_1/set":3,
+             "home/kitchen_2/set":4}
 id_to_topic = {v: k for k, v in topic_to_id.items()}
-topic_to_id_states={"home/contact_1/state":0,"home/contact_2/state":1,"home/lamp_stairs/state":2,"home/kitchen_1/state":3,"home/kitchen_1/state":3,"home/kitchen_2/state":4}
+topic_to_id_states={"home/contact_1/state":0,
+                    "home/contact_2/state":1,
+                    "home/lamp_stairs/state":2,
+                    "home/kitchen_1/state":3,
+                    "home/kitchen_2/state":4}
 id_to_topic_states = {v: k for k, v in topic_to_id_states.items()}
 changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
 def on_publish(client,userdata,result):             #create function for callback
