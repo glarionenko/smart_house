@@ -70,7 +70,7 @@ topic_to_id_states={"home/contact_1/state":0,
                     "home/hall_light_floor_2/state":21,
                     }
 id_to_topic_states = {v: k for k, v in topic_to_id_states.items()}
-changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
 def on_publish(client,userdata,result):             #create function for callback
     print("data published \n")
     pass
