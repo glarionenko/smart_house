@@ -35,7 +35,7 @@ topic_to_id={"home/contact_1/set":0,
              "home/bathroom_light_flor_1/set":10,
              "home/towel_bathroom_flor_1/set":11,
              "home/boiling_light/set":12,
-             }
+             }     
 id_to_topic = {v: k for k, v in topic_to_id.items()}
 topic_to_id_states={"home/contact_1/state":0,
                     "home/contact_2/state":1,
