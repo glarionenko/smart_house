@@ -21,7 +21,7 @@ instr.debug=False
 print(instr)
 sleep(2)
 #
-number_of_triggers=13
+number_of_triggers=22
 topic_to_id={"home/contact_1/set":0,
              "home/contact_2/set":1,
              "home/lamp_stairs/set":2,
@@ -35,6 +35,15 @@ topic_to_id={"home/contact_1/set":0,
              "home/bathroom_light_flor_1/set":10,
              "home/towel_bathroom_flor_1/set":11,
              "home/boiling_light/set":12,
+             "home/bathroom_light_toilet_floor_2/set":13,
+             "home/bathroom_light_shower_floor_2/set":14,
+             "home/towel_bathroom_floor_2/set":15,
+             "home/bedroom_light_floor_2/set":16,
+             "home/bedroom_wardrobe_light_floor_2/set":17,
+             "home/bedroom_socket_floor_2/set":18,
+             "home/room_medium_light_floor_2/set":19,
+             "home/room_small_light_floor_2/set":20,
+             "home/hall_light_floor_2/set":21,
              }     
 id_to_topic = {v: k for k, v in topic_to_id.items()}
 topic_to_id_states={"home/contact_1/state":0,
@@ -50,6 +59,15 @@ topic_to_id_states={"home/contact_1/state":0,
                     "home/bathroom_light_flor_1/state":10,
                     "home/towel_bathroom_flor_1/state":11,
                     "home/boiling_light/state":12,
+                    "home/bathroom_light_toilet_floor_2/state":13,
+                    "home/bathroom_light_shower_floor_2/state":14,
+                    "home/towel_bathroom_floor_2/state":15,
+                    "home/bedroom_light_floor_2/state":16,
+                    "home/bedroom_wardrobe_light_floor_2/state":17,
+                    "home/bedroom_socket_floor_2/state":18,
+                    "home/room_medium_light_floor_2/state":19,
+                    "home/room_small_light_floor_2/state":20,
+                    "home/hall_light_floor_2/state":21,
                     }
 id_to_topic_states = {v: k for k, v in topic_to_id_states.items()}
 changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
