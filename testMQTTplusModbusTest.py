@@ -21,7 +21,7 @@ instr.debug=False
 print(instr)
 sleep(2)
 #
-number_of_triggers=8
+number_of_triggers=13
 topic_to_id={"home/contact_1/set":0,
              "home/contact_2/set":1,
              "home/lamp_stairs/set":2,
@@ -31,6 +31,10 @@ topic_to_id={"home/contact_1/set":0,
              "home/tambur_light/set":6,
              "home/outside_light_down/set":7,
              "home/outside_light_up/set":8,
+             "home/room_1_flor_1/set":9,
+             "home/bathroom_light_flor_1/set":10,
+             "home/towel_bathroom_flor_1/set":11,
+             "home/boiling_light/set":12,
              }
 id_to_topic = {v: k for k, v in topic_to_id.items()}
 topic_to_id_states={"home/contact_1/state":0,
@@ -42,6 +46,10 @@ topic_to_id_states={"home/contact_1/state":0,
                     "home/tambur_light/state":6,
                     "home/outside_light_down/state":7,
                     "home/outside_light_up/state":8,
+                    "home/room_1_flor_1/state":9,
+                    "home/bathroom_light_flor_1/state":10,
+                    "home/towel_bathroom_flor_1/state":11,
+                    "home/boiling_light/state":12,
                     }
 id_to_topic_states = {v: k for k, v in topic_to_id_states.items()}
 changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]

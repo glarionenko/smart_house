@@ -43,16 +43,16 @@
 #define light1_kitchen 7
 #define light_hall_floor1 8
 #define light_badroom_floor2 9
-#define fan_badroom_floor2 10
+#define fan_bathroom_floor2 10
 
 #define light2_kitchen_tv 11
-#define light_badroom_floor1 12
+#define light_bathroom_floor1 12
 #define light1_floor3 49
-#define towel_badroom_floor1 51//полотенчик
-#define towel_badroom_floor2 53
+#define towel_bathroom_floor1 51//полотенчик
+#define towel_bathroom_floor2 53
 
 #define light_room2_floor2 47
-#define fan_badroom_floor1 45
+#define fan_bathroom_floor1 45
 #define light_street_floor2 41
 #define light_on_stairs 39
 #define light_street_floor1 37
@@ -126,6 +126,10 @@ enum
   TAMBUR_LIGHT_SET,
   OUTSIDE_LIGHT_DOWN_SET,
   OUTSIDE_LIGHT_UP_SET,
+  LIGHT_ROOM_1_FLOOR_1_SET,
+  BATHROOM_LIGHT_FLOOR_1_SET,
+  BATHROOM_TOWEL_FLOOR_1_SET,
+  BOIL_LIGHT_SET,
   CONTACT_1_STATE,
   CONTACT_2_STATE,
   LAMP_STAIRS_STATE,
@@ -135,6 +139,10 @@ enum
   TAMBUR_LIGHT_STATE,
   OUTSIDE_LIGHT_DOWN_STATE,
   OUTSIDE_LIGHT_UP_STATE,
+  LIGHT_ROOM_1_FLOOR_1_STATE,
+  BATHROOM_LIGHT_FLOOR_1_STATE,
+  BATHROOM_TOWEL_FLOOR_1_STATE,
+  BOIL_LIGHT_STATE,
   HOLDING_REGS_SIZE // leave this one
   // total number of registers for function 3 and 16 share the same register array
   // i.e. the same address space
@@ -222,23 +230,23 @@ void sleep() {
   holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
   holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
   digitalWrite(light_badroom_floor2, 0);
-  digitalWrite(fan_badroom_floor2, 0);
+  digitalWrite(fan_bathroom_floor2, 0);
 
   digitalWrite(light2_kitchen_tv, 0);
   holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
   holdingRegs[LIGHT2_KITCHEN_STATE] = digitalRead(light2_kitchen_tv);
-  digitalWrite(light_badroom_floor1, 0);
+  digitalWrite(light_bathroom_floor1, 0);
+
   digitalWrite(light1_floor3, 0);
-  digitalWrite(towel_badroom_floor1, 0);
-  digitalWrite(towel_badroom_floor2, 0);
+  digitalWrite(towel_bathroom_floor1, 0);
+
+  digitalWrite(towel_bathroom_floor2, 0);
 
   digitalWrite(light_room2_floor2, 0);
-  digitalWrite(fan_badroom_floor1, 0);
+  digitalWrite(fan_bathroom_floor1, 0);
   digitalWrite(light_street_floor2, 0);
   digitalWrite(light_on_stairs, 0);
   digitalWrite(light_street_floor1, 0);
-  updateRegs(light_street_floor1, OUTSIDE_LIGHT_DOWN_SET, OUTSIDE_LIGHT_DOWN_STATE);
-  updateRegs(light_street_floor2, OUTSIDE_LIGHT_UP_SET, OUTSIDE_LIGHT_UP_STATE);
   holdingRegs[LAMP_STAIRS_STATE] = digitalRead(light_stairs_floor1);
   holdingRegs[LAMP_STAIRS_SET] = digitalRead(light_stairs_floor1);
 
@@ -248,7 +256,13 @@ void sleep() {
   digitalWrite(light_wardrobe_floor2, 0);
   digitalWrite(light_room3_floor2, 0);
   digitalWrite(light2_floor3, 0);
-
+  updateRegs(light_tambur, TAMBUR_LIGHT_SET,TAMBUR_LIGHT_STATE);
+  updateRegs(light_street_floor1, OUTSIDE_LIGHT_DOWN_SET, OUTSIDE_LIGHT_DOWN_STATE);
+  updateRegs(light_street_floor2, OUTSIDE_LIGHT_UP_SET, OUTSIDE_LIGHT_UP_STATE);
+  updateRegs(light_room1_floor1, LIGHT_ROOM_1_FLOOR_1_SET,LIGHT_ROOM_1_FLOOR_1_STATE);
+  updateRegs(light_bathroom_floor1, BATHROOM_LIGHT_FLOOR_1_SET,BATHROOM_LIGHT_FLOOR_1_STATE);
+  updateRegs(towel_bathroom_floor1, BATHROOM_TOWEL_FLOOR_1_SET,BATHROOM_TOWEL_FLOOR_1_STATE);
+  updateRegs(light_kotel, BOIL_LIGHT_SET,BOIL_LIGHT_STATE);
   flag_fan1 = 0;
   flag_fan2 = 0;
   sleep_mode = 1;
@@ -314,7 +328,10 @@ void loop() {
   checkModbus(light_tambur, TAMBUR_LIGHT_SET, TAMBUR_LIGHT_STATE);
   checkModbus(light_street_floor1, OUTSIDE_LIGHT_DOWN_SET, OUTSIDE_LIGHT_DOWN_STATE);
   checkModbus(light_street_floor2, OUTSIDE_LIGHT_UP_SET, OUTSIDE_LIGHT_UP_STATE);
-
+  checkModbus(light_room1_floor1, LIGHT_ROOM_1_FLOOR_1_SET,LIGHT_ROOM_1_FLOOR_1_STATE);
+  checkModbus(light_bathroom_floor1, BATHROOM_LIGHT_FLOOR_1_SET,BATHROOM_LIGHT_FLOOR_1_STATE);
+  checkModbus(towel_bathroom_floor1, BATHROOM_TOWEL_FLOOR_1_SET,BATHROOM_TOWEL_FLOOR_1_STATE);
+  checkModbus(light_kotel, BOIL_LIGHT_SET,BOIL_LIGHT_STATE);
   //-----
   modbus_update();
 
@@ -392,18 +409,18 @@ void loop() {
             holdingRegs[HALL_MAIN_LIGHT_SET] = digitalRead(light_hall_floor1);
             holdingRegs[HALL_MAIN_LIGHT_STATE] = digitalRead(light_hall_floor1);
             digitalWrite(light_badroom_floor2, 0);
-            digitalWrite(fan_badroom_floor2, 0);
+            digitalWrite(fan_bathroom_floor2, 0);
 
             digitalWrite(light2_kitchen_tv, 0);
             holdingRegs[LIGHT2_KITCHEN_SET] = digitalRead(light2_kitchen_tv);
             holdingRegs[LIGHT2_KITCHEN_STATE] = digitalRead(light2_kitchen_tv);
-            digitalWrite(light_badroom_floor1, 0);
+            digitalWrite(light_bathroom_floor1, 0);
             digitalWrite(light1_floor3, 0);
-            digitalWrite(towel_badroom_floor1, 0);
-            digitalWrite(towel_badroom_floor2, 0);
+            digitalWrite(towel_bathroom_floor1, 0);
+            digitalWrite(towel_bathroom_floor2, 0);
 
             digitalWrite(light_room2_floor2, 0);
-            digitalWrite(fan_badroom_floor1, 0);
+            digitalWrite(fan_bathroom_floor1, 0);
             digitalWrite(light_street_floor2, 0);
             digitalWrite(light_on_stairs, 0);
             //digitalWrite(light_street_floor1, 0);
@@ -438,6 +455,11 @@ void loop() {
             updateRegs(light_tambur, TAMBUR_LIGHT_SET,TAMBUR_LIGHT_STATE);
             updateRegs(light_street_floor1, OUTSIDE_LIGHT_DOWN_SET, OUTSIDE_LIGHT_DOWN_STATE);
             updateRegs(light_street_floor2, OUTSIDE_LIGHT_UP_SET, OUTSIDE_LIGHT_UP_STATE);
+            
+            updateRegs(light_room1_floor1, LIGHT_ROOM_1_FLOOR_1_SET,LIGHT_ROOM_1_FLOOR_1_STATE);
+            updateRegs(light_bathroom_floor1, BATHROOM_LIGHT_FLOOR_1_SET,BATHROOM_LIGHT_FLOOR_1_STATE);
+            updateRegs(towel_bathroom_floor1, BATHROOM_TOWEL_FLOOR_1_SET,BATHROOM_TOWEL_FLOOR_1_STATE);
+            updateRegs(light_kotel, BOIL_LIGHT_SET,BOIL_LIGHT_STATE);
             if (flag_error == 0) {
               sleep();
             }
@@ -451,6 +473,7 @@ void loop() {
       delay(40);
       if (!digitalRead(switch_kotel)) {
         digitalWrite(light_kotel, !digitalRead(light_kotel));
+        updateRegs(light_kotel, BOIL_LIGHT_SET,BOIL_LIGHT_STATE);
         flag_kotel = 1;
       }
     }
@@ -771,19 +794,19 @@ void loop() {
     if (!digitalRead(switch_badroom1) && flag_badroom1 == 0) {
       delay(40);
       if (!digitalRead(switch_badroom1)) {
-        if (digitalRead(light_badroom_floor1)) {
-          digitalWrite(light_badroom_floor1, 0);
+        if (digitalRead(light_bathroom_floor1)) {
+          digitalWrite(light_bathroom_floor1, 0);
           flag_fan1 = 1;
           timer_fan1 = millis();
-          digitalWrite(fan_badroom_floor1, 1);
+          digitalWrite(fan_bathroom_floor1, 1);
         }
 
         else {
-          digitalWrite(light_badroom_floor1, 1);
+          digitalWrite(light_bathroom_floor1, 1);
           flag_fan1 = 0;
-          digitalWrite(fan_badroom_floor1, 1);
+          digitalWrite(fan_bathroom_floor1, 1);
         }
-
+        updateRegs(light_bathroom_floor1, BATHROOM_LIGHT_FLOOR_1_SET,BATHROOM_LIGHT_FLOOR_1_STATE);
         flag_badroom1 = 1;
       }
     }
@@ -798,7 +821,7 @@ void loop() {
     if (flag_fan1) {
       if (millis() - timer_fan1 > const_timer_fan1) {
         flag_fan1 = 0;
-        digitalWrite(fan_badroom_floor1, 0);
+        digitalWrite(fan_bathroom_floor1, 0);
       }
     }
     //--------------
@@ -812,13 +835,13 @@ void loop() {
           digitalWrite(light_badroom_floor2, 0);
           flag_fan2 = 1;
           timer_fan2 = millis();
-          digitalWrite(fan_badroom_floor2, 1);
+          digitalWrite(fan_bathroom_floor2, 1);
         }
 
         else {
           digitalWrite(light_badroom_floor2, 1);
           flag_fan1 = 0;
-          digitalWrite(fan_badroom_floor2, 1);
+          digitalWrite(fan_bathroom_floor2, 1);
         }
 
 
@@ -838,7 +861,7 @@ void loop() {
     if (flag_fan2) {
       if (millis() - timer_fan2 > const_timer_fan2) {
         flag_fan2 = 0;
-        digitalWrite(fan_badroom_floor2, 0);
+        digitalWrite(fan_bathroom_floor2, 0);
       }
     }
     //--------------
@@ -851,7 +874,7 @@ void loop() {
       delay(40);
       if (!digitalRead(switch_badroom2)) {
         digitalWrite(light_badroom_floor2, !digitalRead(light_badroom_floor2));
-        digitalWrite(fan_badroom_floor2, digitalRead(light_badroom_floor2));
+        digitalWrite(fan_bathroom_floor2, digitalRead(light_badroom_floor2));
         flag_badroom2 = 1;
       }
     }
@@ -869,6 +892,7 @@ void loop() {
       delay(40);
       if (!digitalRead(switch_room1_floor1)) {
         digitalWrite(light_room1_floor1, !digitalRead(light_room1_floor1));
+        updateRegs(light_room1_floor1, LIGHT_ROOM_1_FLOOR_1_SET,LIGHT_ROOM_1_FLOOR_1_STATE);
         flag_room1_floor1 = 1;
       }
     }
