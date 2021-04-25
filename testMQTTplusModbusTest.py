@@ -2,6 +2,20 @@
 import paho.mqtt.client as paho
 import minimalmodbus
 from time import *
+#
+import serial
+import serial.tools.list_ports
+
+ports = serial.tools.list_ports.comports() #automatic searching of ports
+portArd = '7523'#0042
+
+for port1, desc, hwid in sorted(ports):
+    print(hwid)
+    if (hwid.find(portArd) != -1):
+        print ("Arduino found")
+        print (port1)
+        arduino_port = port1
+#
 
 #mqtt auth
 broker="127.0.0.1"
@@ -9,7 +23,7 @@ port=1883
 
 #modbus start
 minimalmodbus.baudrate = 4800
-instr = minimalmodbus.Instrument('/dev/ttyUSB0', 1)
+instr = minimalmodbus.Instrument(arduino_port, 1)
 instr.serial.baudrate=4800
 #instr.serial.bytesize = 8 # Data bits.
 #instr.serial.stopbits = 1 # Stop bits.
