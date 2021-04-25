@@ -7,7 +7,7 @@ import serial
 import serial.tools.list_ports
 
 ports = serial.tools.list_ports.comports() #automatic searching of ports
-portArd = '7523'#0042
+portArd = '0042'#'7523'#0042
 
 for port1, desc, hwid in sorted(ports):
     print(hwid)
@@ -86,7 +86,9 @@ topic_to_id_states={"home/contact_1/state":0,
 id_to_topic_states = {v: k for k, v in topic_to_id_states.items()}
 
 changed=[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
-
+def on_disconnect(client, userdata, rc):
+    print("disonnected")
+    client1.connect_async()
 def on_publish(client,userdata,result):             #create function for callback
     print("data published \n")
     pass
@@ -110,6 +112,7 @@ client1= paho.Client("openhabian12")                           #create client ob
 client1.username_pw_set("house","55566678")
 client1.on_publish = on_publish                          #assign function to callback
 client1.on_message=on_message
+client1.on_disconnect=on_disconnect
 client1.connect(broker,port)
 client1.loop_start()
 for x in range(0,number_of_triggers):
@@ -142,10 +145,12 @@ while True:
         try:
             print(tr)
             bb=instr.read_register(tr,0)
-            client1.publish(id_to_topic_states[tr-number_of_triggers],bb)
+            client1.publish(id_to_topic_states[tr-number_of_triggers],bb,qos=1)
             countError=0
         except Exception as e:
             print(e)
+            print(countError)
+            countError=countError+1
             if countError>15:
                 raise ValueError('A very specific bad thing happened.')
 
