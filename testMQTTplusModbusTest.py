@@ -132,6 +132,7 @@ def change(_register,_value):
         value=0
         print(e)
         #continue
+countError=0
 while True:
     sleep(1)
     #cb=instr.read_register(1,0)
@@ -142,8 +143,12 @@ while True:
             print(tr)
             bb=instr.read_register(tr,0)
             client1.publish(id_to_topic_states[tr-number_of_triggers],bb)
+            countError=0
         except Exception as e:
             print(e)
+            if countError>15:
+                raise ValueError('A very specific bad thing happened.')
+
 
     
     
