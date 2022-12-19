@@ -9,3 +9,4 @@ protocol websockets
 #mqtt login house password 55566678
 #http://www.steves-internet-guide.com/mqtt-username-password-example/
 #https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-the-mosquitto-mqtt-messaging-broker-on-ubuntu-16-04#:~:text=Mosquitto%20includes%20a%20utility%20to,%2Fetc%2Fmosquitto%2Fpasswd%20.
+#https://stevessmarthomeguide.com/install-mosquitto-raspberry-pi/ good link
